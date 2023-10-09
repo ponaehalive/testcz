@@ -44,21 +44,16 @@ class FavoritesScreenViewModel extends ChangeNotifier with BaseViewModel {
   }
 
   Future<void> _saveFavorites() async {
-    print('save');
-
     await _prefs?.setStringList('favoriteRepos', favoriteRepoNames!);
   }
 
   void init() async {
-    print('init favorites');
-
     await _initPrefs();
     // ignore: avoid_print
     await _loadFavorites();
   }
 
   Future<void> _loadFavorites() async {
-    print('load favorites');
     favoriteRepoNames = _prefs?.getStringList('favoriteRepos');
 
     notifyListeners();

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:testovoecz/domain/models/repo_model.dart';
 import 'package:testovoecz/screens/favorites/favorites_screen_vm.dart';
 import 'package:testovoecz/screens/main/main_screen.dart';
-import 'package:testovoecz/screens/main/main_screen_vm.dart';
 import 'package:testovoecz/screens/widgets/custom_appbar.dart';
 import 'package:testovoecz/themes/app_colors.dart';
 import 'package:testovoecz/themes/text_styles.dart';
@@ -34,7 +31,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               viewModel.clearRepositories();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MainScreen()),
+                MaterialPageRoute(builder: (context) => const MainScreen()),
               );
             },
           ),
