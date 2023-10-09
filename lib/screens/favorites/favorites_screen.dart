@@ -6,6 +6,7 @@ import 'package:testovoecz/domain/models/repo_model.dart';
 import 'package:testovoecz/screens/favorites/favorites_screen_vm.dart';
 import 'package:testovoecz/screens/main/main_screen.dart';
 import 'package:testovoecz/screens/main/main_screen_vm.dart';
+import 'package:testovoecz/screens/widgets/custom_appbar.dart';
 import 'package:testovoecz/themes/app_colors.dart';
 import 'package:testovoecz/themes/text_styles.dart';
 import 'package:testovoecz/ui/app_images.dart';
@@ -23,39 +24,22 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4.0),
-          child: Container(
-            color: AppColors.textPlaceHolder,
-            height: 1.0,
+      appBar: CustomAppBar(
+          IconButton(
+            icon: SizedBox(
+                height: 44,
+                width: 44,
+                child: SvgPicture.asset(AppImages.backButton)),
+            onPressed: () {
+              viewModel.clearRepositories();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MainScreen()),
+              );
+            },
           ),
-        ),
-        elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          // Status bar color
-          statusBarColor: AppColors.background,
-        ),
-        centerTitle: true,
-        backgroundColor: AppColors.background,
-        title: Text(
-          'Favorite repos list',
-          style: TextStyles.main,
-        ),
-        leading: IconButton(
-          icon: SizedBox(
-              height: 44,
-              width: 44,
-              child: SvgPicture.asset(AppImages.backButton)),
-          onPressed: () {
-            viewModel.clearRepositories();
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MainScreen()),
-            );
-          },
-        ),
-      ),
+          null,
+          'Favorite repos list'),
 
       // backgroundColor: AppColors.mainBackground,
       body: SafeArea(

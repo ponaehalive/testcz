@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:testovoecz/screens/favorites/favorites_screen.dart';
 import 'package:testovoecz/screens/main/main_screen_vm.dart';
+import 'package:testovoecz/screens/widgets/custom_appbar.dart';
 import 'package:testovoecz/themes/app_colors.dart';
 import 'package:testovoecz/themes/text_styles.dart';
 import 'package:testovoecz/ui/app_images.dart';
@@ -23,26 +23,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4.0),
-          child: Container(
-            color: AppColors.textPlaceHolder,
-            height: 1.0,
-          ),
-        ),
-        elevation: 0,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: AppColors.background,
-        ),
-        centerTitle: true,
-        backgroundColor: AppColors.background,
-        leading: const SizedBox.shrink(),
-        title: Text(
-          'GitHub repos list',
-          style: TextStyles.main,
-        ),
-        actions: [
+      appBar: CustomAppBar(
+          null,
           IconButton(
             icon: SvgPicture.asset(AppImages.button),
             onPressed: () {
@@ -54,8 +36,7 @@ class _MainScreenState extends State<MainScreen> {
               );
             },
           ),
-        ],
-      ),
+          'GitHub repos list'),
       body: SafeArea(
         child: ChangeNotifierProvider<MainScreenViewModel>(
           create: (_) => viewModel..init(),
@@ -68,14 +49,22 @@ class _MainScreenState extends State<MainScreen> {
                   children: [
                     const SizedBox(height: 24),
                     customTextField(context, focusNode: _focusNode),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          viewModel.allRepo.isEmpty
+                              ? 'Search History'
+                              : 'What we have found',
+                          style: TextStyles.mainBlue,
+                        )),
                     viewModel.selector<MainScreenViewModel, bool?>(
                         selector: () => viewModel.allRepo.isNotEmpty,
                         builder: (ctx, _) {
                           return viewModel.allRepo.isNotEmpty
                               ? (viewModel.isRepoLoading)
-                                  ? Container(
-                                      color: Colors.red,
+                                  ? const CircularProgressIndicator(
+                                      color: AppColors.accentPrimaryBase,
                                     )
                                   : Expanded(
                                       child: SingleChildScrollView(
@@ -143,46 +132,48 @@ class _MainScreenState extends State<MainScreen> {
                                         ),
                                       ),
                                     )
-                              :
-
-                              // viewModel.history!.isNotEmpty
-                              //         ? ListView.builder(
-                              //             physics:
-                              //                 const NeverScrollableScrollPhysics(),
-                              //             shrinkWrap: true,
-                              //             itemCount: viewModel.history?.length,
-                              //             itemBuilder: (context, index) {
-                              //               return Padding(
-                              //                 padding: const EdgeInsets.only(
-                              //                     bottom: 8.0),
-                              //                 child: ListTile(
-                              //                   tileColor: AppColors.layer1,
-                              //                   shape: RoundedRectangleBorder(
-                              //                     borderRadius:
-                              //                         BorderRadius.circular(10),
-                              //                   ),
-                              //                   title: Text(
-                              //                       viewModel.history?[index] ??
-                              //                           ''),
-                              //                   trailing: Padding(
-                              //                     padding: const EdgeInsets.only(
-                              //                         right: 8.0),
-                              //                     child: SvgPicture.asset(
-                              //                         AppImages.favoriteActive),
-                              //                   ),
-                              //                 ),
-                              //               );
-                              //             },
-                              //           )
-                              //     :
-
-                              Center(
-                                  child: Text(
-                                    'You have empty history.\nClick on search to start journey!',
-                                    style: TextStyles.bodyHint,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                );
+                              : viewModel.history != null &&
+                                      viewModel.history!.isNotEmpty
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(top: 16.0),
+                                      child: ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: viewModel.history?.length,
+                                        itemBuilder: (context, index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 8.0),
+                                            child: ListTile(
+                                              tileColor: AppColors.layer1,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              title: Text(
+                                                  viewModel.history?[index] ??
+                                                      ''),
+                                              trailing: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 8.0),
+                                                child: SvgPicture.asset(
+                                                    AppImages.favoriteActive),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding:
+                                          const EdgeInsets.only(top: 100.0),
+                                      child: Text(
+                                        'You have empty history.\nClick on search to start journey!',
+                                        style: TextStyles.bodyHint,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    );
                         }),
                   ],
                 ),

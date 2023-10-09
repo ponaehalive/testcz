@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testovoecz/base/base_vm.dart';
 import 'package:testovoecz/domain/bloc/repo_event.dart';
 import 'package:testovoecz/domain/models/repo_model.dart';
-import 'package:testovoecz/screens/favorites_manager.dart';
 
 import '../../domain/bloc/repo_bloc.dart';
 
@@ -73,5 +70,4 @@ class FavoritesScreenViewModel extends ChangeNotifier with BaseViewModel {
 
   final TextEditingController searchController = TextEditingController();
   List<dynamic> searchResults = [];
-  late FavoritesManager favoritesManager;
 }

@@ -9,6 +9,12 @@ abstract class TextStyles {
     color: AppColors.textPrimary,
   );
 
+  static final mainBlue = GoogleFonts.raleway(
+    fontWeight: FontWeight.w600,
+    fontSize: 16,
+    color: AppColors.accentPrimaryBase,
+  );
+
   static final body = GoogleFonts.raleway(
     fontWeight: FontWeight.w400,
     fontSize: 14,
